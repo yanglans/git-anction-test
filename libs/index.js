@@ -30,7 +30,8 @@ function getLogFile(){
 //写入Log文件
 function writLogFile(data){
     const logList = `${data} \n${moment().format('YYYY-MM-DD HH:mm:ss')} amber push `
-    fs.writeFile('log',logList,function(err){
+    console.log(logList)
+    fs.writeFileSync('log',logList,function(err){
         if(err){
            return console.log('write error',err)
         }
@@ -114,6 +115,7 @@ function pushToGit() {
 
 // 入口函数
 function main(){
+  console.log(fs.writeFileSync)
     getLogFile()
     // pushToGit()
 }
