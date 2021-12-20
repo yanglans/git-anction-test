@@ -8,4 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Pull request
-        run: npm run pr
+        run: |
+          npm install
+          npm run pr
