@@ -17,7 +17,7 @@ const scm = function createSCM(item) {
 
 // 获取Log文件
 function getLogFile(){
-    fs.readFile('log', (err, data) => {
+    fs.readFile('log.txt', (err, data) => {
         if (err) {
           console.error(err)
           return
@@ -31,7 +31,7 @@ function getLogFile(){
 function writLogFile(data){
     const logList = `${data} \n${moment().format('YYYY-MM-DD HH:mm:ss')} amber push `
     console.log(logList)
-    fs.writeFileSync('log',logList,function(err){
+    fs.writeFileSync('log.txt',logList,function(err){
         if(err){
            return console.log('write error',err)
         }
@@ -115,7 +115,7 @@ function pushToGit() {
 
 // 入口函数
 function main(){
-  console.log(fs.writeFileSync)
+  console.log('fssdghsds',fs.writeFileSync)
     getLogFile()
     // pushToGit()
 }
