@@ -16,6 +16,19 @@ let prVal = {
 };
 let scm
 
+function getOrSetGitHubJSON(url, method = "GET", data = {}) {
+  return axios({
+    url,
+    method,
+    headers: {
+      'Authorization': `token ${context.token}`
+    },
+    dataType: 'json',
+    data: JSON.stringify(data),
+    contentType: 'application/json'
+  })
+}
+
 class Github {
   constructor(baseUrl, user, accessToken) {
     this.baseUrl = baseUrl;
@@ -25,6 +38,8 @@ class Github {
     this.prRepo = "actions-text";
     this.mainRef = "heads/master";
   }
+
+  
 
   // 检查是否存在文档地址
   checkDocsPath = (path) => {
