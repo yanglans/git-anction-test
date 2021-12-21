@@ -209,17 +209,8 @@ function createMainPr(base64Code, path, title) {
     });
 }
 
-async function run() {
-  
-
-  console.log(context);
-}
-
-run();
-
 // 入口函数
 function main() {
-  run()
   createSCM();
   getLogFile();
 }
