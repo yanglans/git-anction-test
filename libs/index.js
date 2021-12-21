@@ -2,12 +2,19 @@
 const moment = require("moment");
 const axios = require("axios");
 const Base64 = require("js-base64");
+const GithubAction = require('@actions/github')
+const GithubCore = require('@actions/core')
 
 
 const access_token = process.env.ACCESS_TOKEN
 const access_name = process.env.ACCESS_USERNAME
 const gitUrl =
   "https://api.github.com/repos/yanglans/actions-text/contents/index.json";
+let prVal = {
+  branchName:'',
+  prNumber: '',
+  html_url:''
+}
 
 class Github {
   constructor(baseUrl, user, accessToken) {
@@ -123,10 +130,15 @@ function getLogFile() {
     .then((response) => {
       const data = JSON.parse(Base64.decode(response.data.content));
       data.log.push(
-        `${moment().format("YYYY-MM-DD HH:mm:ss")} ${access_name} push `
+        {
+          time: moment().format("YYYY-MM-DD HH:mm:ss") ,
+          user: access_name,
+          action: '',
+          html_url: ''
+        }
       );
       console.log(data)
-      
+
       // handleGit({
       //   base64Code: data,
       //   path: gitUrl,
@@ -196,8 +208,17 @@ function createMainPr(base64Code, path, title) {
     });
 }
 
+async function run() {
+  const context = GithubAction.context;
+
+  console.log(context);
+}
+
+run();
+
 // 入口函数
 function main() {
+  run()
   createSCM();
   getLogFile();
 }
