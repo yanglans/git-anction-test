@@ -12,8 +12,8 @@ jobs:
 
       - name: Pull request
         env:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          ACCESS_NAME: ${{ secrets.ACCESS_NAME }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN}}
+          ACCESS_NAME: ${{ secrets.ACCESS_USERNAME }}
         run: |
           npm install
           npm run pr

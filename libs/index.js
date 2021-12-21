@@ -3,11 +3,9 @@ const moment = require("moment");
 const axios = require("axios");
 const Base64 = require("js-base64");
 
-// const access_token =
-//   process.env.ACCESS_TOKEN || "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";
-// const access_name = process.env.ACCESS_NAME || "yanglans";
-const access_token = "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";
-const access_name = "yanglans";
+
+const access_token = process.env.ACCESS_TOKEN
+const access_name = process.env.ACCESS_USERNAME
 const gitUrl =
   "https://api.github.com/repos/yanglans/actions-text/contents/index.json";
 
