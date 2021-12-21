@@ -136,7 +136,7 @@ function createSCM() {
 // 获取Log文件
 function getLogFile() {
   axios
-    .get(`${base_url}/web/apps/docs-summary-ui/log/index.json`, {
+    .get(`${base_url}/repos/mono/mono/contents/web/apps/docs-summary-ui/log/index.json?ref=master`, {
       headers: {
         Authorization: `token ${access_token}`,
       },
