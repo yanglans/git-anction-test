@@ -21,7 +21,7 @@ function getOrSetGitHubJSON(url, method = "GET", data = {}) {
     url,
     method,
     headers: {
-      'Authorization': `token ${context.token}`
+      'Authorization': `token ${access_token}`
     },
     dataType: 'json',
     data: JSON.stringify(data),
