@@ -157,6 +157,7 @@ function getLogFile() {
     })
     .catch((err) => {
       console.log("失败111");
+      console.log(err)
     });
 }
 
