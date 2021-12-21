@@ -2,19 +2,18 @@
 const moment = require("moment");
 const axios = require("axios");
 const Base64 = require("js-base64");
-const GithubAction = require('@actions/github')
-const GithubCore = require('@actions/core')
+const GithubAction = require("@actions/github");
+const GithubCore = require("@actions/core");
 
-
-const access_token = process.env.ACCESS_TOKEN
-const access_name = 'yanglans'
+const access_token = process.env.ACCESS_TOKEN;
+const context = GithubAction.context;
 const gitUrl =
   "https://api.github.com/repos/yanglans/actions-text/contents/index.json";
 let prVal = {
-  branchName:'',
-  prNumber: '',
-  html_url:''
-}
+  branchName: "",
+  prNumber: "",
+  html_url: "",
+};
 
 class Github {
   constructor(baseUrl, user, accessToken) {
@@ -52,7 +51,7 @@ class Github {
     );
   };
 
-  createBranch = (path, title) => {
+  createBranch = (path) => {
     return new Promise((resolve, reject) => {
       // 先检查是否存在文档地址
       // 获取mono里面的master分支的sha
@@ -102,10 +101,10 @@ class Github {
     );
   };
   // 推送文件到git仓库
-  pushSigleFile = (branch, path, title, code) => {
+  pushSigleFile = (branch, path, code) => {
     return this.getFileSha(path, branch).then((res) => {
       const payload = {
-        message: `feat: Synchronize documents from Google docs ${title} to git`,
+        message: `feat: new message changed`,
         content: code,
         sha: res.sha,
         branch: branch,
@@ -116,35 +115,33 @@ class Github {
 }
 
 function createSCM() {
-  return new Github(gitUrl, access_name, access_token);
+  return new Github(gitUrl, context.payload.pusher.name, access_token);
 }
 
 // 获取Log文件
 function getLogFile() {
-  console.log(access_token)
-  const context = GithubAction.context;
-  axios.get(gitUrl, {
+  console.log(access_token);
+
+  axios
+    .get(gitUrl, {
       headers: {
         Authorization: `token ${access_token}`,
       },
-       })
+    })
     .then((response) => {
       const data = JSON.parse(Base64.decode(response.data.content));
-      data.log.push(
-        {
-          time: moment().format("YYYY-MM-DD HH:mm:ss") ,
-          user: context.payload.pusher.name,
-          action: context.eventName,
-          html_url: context.payload.repository.html_url
-        }
-      );
-      console.log(data)
+      data.log.push({
+        time: moment().format("YYYY-MM-DD HH:mm:ss"),
+        user: context.payload.pusher.name,
+        action: context.eventName,
+        html_url: context.payload.repository.html_url,
+      });
+      console.log(data);
 
-      // handleGit({
-      //   base64Code: data,
-      //   path: gitUrl,
-      //   title: "改变log文件",
-      // });
+      handleGit({
+        base64Code: data,
+        path: gitUrl,
+      });
     })
     .catch((err) => {
       console.log("失败111");
@@ -155,52 +152,49 @@ function getLogFile() {
 // 向mono仓库提pr
 // 处理git流程
 function handleGit(val) {
-  const { base64Code, path, title } = val;
-  const localStorgeVal = localStorage.getItem("prTitle");
-  if (localStorgeVal) {
-    const branchName = pr.branchName;
-    const prNumber = pr.prNumber;
+  const { base64Code, path } = val;
+  const { branchName, prNumber } = prVal;
+  if (prNumber) {
     scm
       .checkPrState(prNumber)
       .then((res) => {
         // 如果上一个pr是打开状态并且可以合并
         if (res.state === "open" && res.mergeable === true) {
           console.log("失败222");
-          return scm
-            .pushSigleFile(branchName, path, title, base64Code)
-            .then(() => {
-              console.log("推送成功");
-            });
+          return scm.pushSigleFile(branchName, path, base64Code).then(() => {
+            console.log("推送成功");
+          });
         } else {
-          createMainPr(base64Code, path, title);
+          createMainPr(base64Code, path);
         }
       })
       .catch((err) => {
         localStorage.removeItem("prTitle");
       });
   } else {
-    createMainPr(base64Code, path, title);
+    createMainPr(base64Code, path);
   }
 }
 
-function createMainPr(base64Code, path, title) {
+function createMainPr(base64Code, path) {
   console.log("失败333");
   // 创建新的分支
   scm
-    .createBranch(path, title)
+    .createBranch(path)
     .then((res) => {
       // 拿到新的分支名称
       const branchName = res;
       // push到新的分支
-      scm.pushSigleFile(branchName, path, title, base64Code).then(() => {
+      scm.pushSigleFile(branchName, path, base64Code).then(() => {
         // 创建pr
         scm.createPr(branchName).then((res1) => {
           // 这里都成功了 就代表成功了
-          localStorage.setItem('prTitle',{
-              prNumber: res1.number,
-              html_url: res1.html_url,
-              branchName: branchName,
-          })
+          prVal = {
+            ...prVal,
+            prNumber: res1.number,
+            html_url: res1.html_url,
+            branchName: branchName,
+          };
         });
       });
     })
