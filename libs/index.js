@@ -214,9 +214,8 @@ function createMainPr(base64Code, path) {
 
 // 入口函数
 function main() {
- 
-  // createSCM();
-  // getLogFile();
+  createSCM();
+  getLogFile();
 }
 
 main();
