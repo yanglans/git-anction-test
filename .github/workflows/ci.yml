@@ -14,6 +14,7 @@ jobs:
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN}}
           ACCESS_NAME: ${{ secrets.ACCESS_USERNAME }}
+          BASE_URL: ${{secrets.BASE_URL}
         run: |
           npm install
           npm run pr

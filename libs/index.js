@@ -6,6 +6,7 @@ const GithubAction = require("@actions/github");
 const GithubCore = require("@actions/core");
 
 const access_token = process.env.ACCESS_TOKEN;
+const base_url = process.env.BASE_URL
 const context = GithubAction.context;
 const gitUrl =
   "https://api.github.com/repos/yanglans/actions-text/contents/index.json";
@@ -135,7 +136,7 @@ function createSCM() {
 // 获取Log文件
 function getLogFile() {
   axios
-    .get(gitUrl, {
+    .get(`${base_url}/web/apps/docs-summary-ui/log/index.json`, {
       headers: {
         Authorization: `token ${access_token}`,
       },
@@ -148,10 +149,11 @@ function getLogFile() {
         action: context.eventName,
         html_url: context.payload.repository.html_url,
       });
-      handleGit({
-        base64Code: data,
-        path: 'index.json',
-      });
+      console.log(data)
+      // handleGit({
+      //   base64Code: data,
+      //   path: 'index.json',
+      // });
     })
     .catch((err) => {
       console.log("失败111");
