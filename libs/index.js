@@ -31,15 +31,13 @@ function getOrSetGitHubJSON(url, method = "GET", data = {}) {
 
 class Github {
   constructor(baseUrl, user, accessToken) {
-    this.baseUrl = baseUrl;
+    this.baseUrl = 'https://api.github.com`';
     this.user = user;
     this.accessToken = accessToken;
     this.namespaces = [user];
     this.prRepo = "actions-text";
     this.mainRef = "heads/master";
   }
-
-  
 
   // 检查是否存在文档地址
   checkDocsPath = (path) => {
@@ -136,8 +134,6 @@ function createSCM() {
 
 // 获取Log文件
 function getLogFile() {
-  console.log(access_token);
-
   axios
     .get(gitUrl, {
       headers: {
@@ -152,8 +148,6 @@ function getLogFile() {
         action: context.eventName,
         html_url: context.payload.repository.html_url,
       });
-      console.log(data);
-
       handleGit({
         base64Code: data,
         path: gitUrl,
@@ -161,11 +155,10 @@ function getLogFile() {
     })
     .catch((err) => {
       console.log("失败111");
-      console.log(err);
     });
 }
 
-// 向mono仓库提pr
+// 向主仓库提pr
 // 处理git流程
 function handleGit(val) {
   const { base64Code, path } = val;
@@ -215,14 +208,15 @@ function createMainPr(base64Code, path) {
       });
     })
     .catch((err) => {
-      console.log(err);
+      console.log('这里失败了',err);
     });
 }
 
 // 入口函数
 function main() {
-  createSCM();
-  getLogFile();
+ 
+  // createSCM();
+  // getLogFile();
 }
 
 main();
