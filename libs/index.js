@@ -31,7 +31,7 @@ function getOrSetGitHubJSON(url, method = "GET", data = {}) {
 
 class Github {
   constructor(baseUrl, user, accessToken) {
-    this.baseUrl = 'https://api.github.com`';
+    this.baseUrl = 'https://api.github.com';
     this.user = user;
     this.accessToken = accessToken;
     this.namespaces = [user];
@@ -150,7 +150,7 @@ function getLogFile() {
       });
       handleGit({
         base64Code: data,
-        path: gitUrl,
+        path: 'index.json',
       });
     })
     .catch((err) => {
