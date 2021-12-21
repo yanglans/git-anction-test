@@ -7,7 +7,7 @@ const GithubCore = require('@actions/core')
 
 
 const access_token = process.env.ACCESS_TOKEN
-const access_name = process.env.ACCESS_USERNAME
+const access_name = 'yanglans'
 const gitUrl =
   "https://api.github.com/repos/yanglans/actions-text/contents/index.json";
 let prVal = {
