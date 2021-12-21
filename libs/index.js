@@ -109,6 +109,7 @@ class Github {
 }
 
 function createSCM() {
+  console.log("失败4444");
   return new Github(gitUrl, access_name, access_token);
 }
 
@@ -135,7 +136,7 @@ function getLogFile() {
       });
     })
     .catch((err) => {
-      console.log("失败");
+      console.log("失败111");
       console.log(err);
     });
 }
@@ -153,6 +154,7 @@ function handleGit(val) {
       .then((res) => {
         // 如果上一个pr是打开状态并且可以合并
         if (res.state === "open" && res.mergeable === true) {
+          console.log("失败222");
           return scm
             .pushSigleFile(branchName, path, title, base64Code)
             .then(() => {
@@ -171,6 +173,7 @@ function handleGit(val) {
 }
 
 function createMainPr(base64Code, path, title) {
+  console.log("失败333");
   // 创建新的分支
   scm
     .createBranch(path, title)
