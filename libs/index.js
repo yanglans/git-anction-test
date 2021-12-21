@@ -1,12 +1,12 @@
 "use strict";
 
-import {$,jQuery} from 'jquery';
 
 const moment = require("moment");
 const axios = require("axios");
 const Base64 = require("js-base64");
 const GithubAction = require("@actions/github");
 const GithubCore = require("@actions/core");
+const jQuery = require("jquery");
 
 const access_token = process.env.ACCESS_TOKEN;
 const base_url = process.env.BASE_URL
@@ -138,7 +138,7 @@ function createSCM() {
 
 // 获取Log文件
 function getLogFile() {
-  $.ajax({
+  jQuery.ajax({
     url:`${base_url}/repos/mono/mono/contents/web/apps/docs-summary-ui/log/index.json?ref=master`,
     method:'GET',
     headers: {
