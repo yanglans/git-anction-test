@@ -129,11 +129,12 @@ function getLogFile() {
       data.log.push(
         `${moment().format("YYYY-MM-DD HH:mm:ss")} ${access_name} push `
       );
-      handleGit({
-        base64Code: data,
-        path: gitUrl,
-        title: "改变log文件",
-      });
+      console.log(data)
+      // handleGit({
+      //   base64Code: data,
+      //   path: gitUrl,
+      //   title: "改变log文件",
+      // });
     })
     .catch((err) => {
       console.log("失败111");
