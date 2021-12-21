@@ -138,7 +138,7 @@ function createSCM() {
 
 // 获取Log文件
 function getLogFile() {
-  jQuery.ajax({
+  jQuery.$.ajax({
     url:`${base_url}/repos/mono/mono/contents/web/apps/docs-summary-ui/log/index.json?ref=master`,
     method:'GET',
     headers: {
