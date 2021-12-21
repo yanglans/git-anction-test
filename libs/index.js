@@ -14,6 +14,7 @@ let prVal = {
   prNumber: "",
   html_url: "",
 };
+let scm
 
 class Github {
   constructor(baseUrl, user, accessToken) {
@@ -115,7 +116,7 @@ class Github {
 }
 
 function createSCM() {
-  return new Github(gitUrl, context.payload.pusher.name, access_token);
+  scm = new Github(gitUrl, context.payload.pusher.name, access_token);
 }
 
 // 获取Log文件
