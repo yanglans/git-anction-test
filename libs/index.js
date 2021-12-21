@@ -122,6 +122,7 @@ function createSCM() {
 // 获取Log文件
 function getLogFile() {
   console.log(access_token)
+  const context = GithubAction.context;
   axios.get(gitUrl, {
       headers: {
         Authorization: `token ${access_token}`,
@@ -132,9 +133,9 @@ function getLogFile() {
       data.log.push(
         {
           time: moment().format("YYYY-MM-DD HH:mm:ss") ,
-          user: access_name,
-          action: '',
-          html_url: ''
+          user: context.payload.pusher.name,
+          action: context.eventName,
+          html_url: context.payload.repository.html_url
         }
       );
       console.log(data)
@@ -209,7 +210,7 @@ function createMainPr(base64Code, path, title) {
 }
 
 async function run() {
-  const context = GithubAction.context;
+  
 
   console.log(context);
 }
