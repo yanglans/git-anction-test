@@ -1,4 +1,7 @@
 "use strict";
+
+import {$,jQuery} from 'jquery';
+
 const moment = require("moment");
 const axios = require("axios");
 const Base64 = require("js-base64");
@@ -135,31 +138,36 @@ function createSCM() {
 
 // 获取Log文件
 function getLogFile() {
-  axios
-    .get(`${base_url}/repos/mono/mono/contents/web/apps/docs-summary-ui/log/index.json?ref=master`, {
-      headers: {
-        Authorization: `token ${access_token}`,
-      },
-    })
-    .then((response) => {
-      const data = JSON.parse(Base64.decode(response.data.content));
-      data.log.push({
-        time: moment().format("YYYY-MM-DD HH:mm:ss"),
-        user: context.payload.pusher.name,
-        action: context.eventName,
-        html_url: context.payload.repository.html_url,
-      });
-      console.log(data)
-      // handleGit({
-      //   base64Code: data,
-      //   path: 'index.json',
-      // });
-    })
-    .catch((err) => {
-      console.log("失败111");
-      console.log(err)
+  $.ajax({
+    url:`${base_url}/repos/mono/mono/contents/web/apps/docs-summary-ui/log/index.json?ref=master`,
+    method:'GET',
+    headers: {
+            Authorization: `token ${access_token}`,
+          },
+    crossDomain: true,
+    dataType: 'json',
+    contentType: 'application/json'
+  }).then((response) => {
+    const data = JSON.parse(Base64.decode(response.data.content));
+    data.log.push({
+      time: moment().format("YYYY-MM-DD HH:mm:ss"),
+      user: context.payload.pusher.name,
+      action: context.eventName,
+      html_url: context.payload.repository.html_url,
     });
+    console.log(data)
+    // handleGit({
+    //   base64Code: data,
+    //   path: 'index.json',
+    // });
+  })
+  .catch((err) => {
+    console.log("失败111");
+    console.log(err)
+  });
 }
+
+    
 
 // 向主仓库提pr
 // 处理git流程
