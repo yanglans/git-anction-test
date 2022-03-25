@@ -1,0 +1,21 @@
+.breadCrumbContainer{
+    display: flex;
+    align-items: center;
+}
+
+.breadItemIcon{
+    margin: 0 6px;
+    color: #c0c4cc;
+}
+.hasLinkItem{
+    color: #303133;
+    cursor: pointer;
+    
+}
+.hasLinkItem:hover{
+    color: rgb(240, 185, 11);
+    transition: .3s all;
+}
+.hasNoLinkItem{
+    color: #606266;
+}
